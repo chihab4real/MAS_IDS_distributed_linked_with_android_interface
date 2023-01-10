@@ -1,0 +1,33 @@
+@relation 'KDDTest-weka.filters.unsupervised.attribute.Remove-R7-11,13-22-weka.filters.unsupervised.attribute.Remove-Rlast-weka.filters.unsupervised.attribute.Add-TNOM-Nclass-Lnormal,anomaly-Clast'
+
+@attribute duration numeric
+@attribute protocol_type {tcp,udp,icmp}
+@attribute service {aol,auth,bgp,courier,csnet_ns,ctf,daytime,discard,domain,domain_u,echo,eco_i,ecr_i,efs,exec,finger,ftp,ftp_data,gopher,harvest,hostnames,http,http_2784,http_443,http_8001,imap4,IRC,iso_tsap,klogin,kshell,ldap,link,login,mtp,name,netbios_dgm,netbios_ns,netbios_ssn,netstat,nnsp,nntp,ntp_u,other,pm_dump,pop_2,pop_3,printer,private,red_i,remote_job,rje,shell,smtp,sql_net,ssh,sunrpc,supdup,systat,telnet,tftp_u,tim_i,time,urh_i,urp_i,uucp,uucp_path,vmnet,whois,X11,Z39_50}
+@attribute flag {OTH,REJ,RSTO,RSTOS0,RSTR,S0,S1,S2,S3,SF,SH}
+@attribute src_bytes numeric
+@attribute dst_bytes numeric
+@attribute logged_in {0,1}
+@attribute count numeric
+@attribute srv_count numeric
+@attribute serror_rate numeric
+@attribute srv_serror_rate numeric
+@attribute rerror_rate numeric
+@attribute srv_rerror_rate numeric
+@attribute same_srv_rate numeric
+@attribute diff_srv_rate numeric
+@attribute srv_diff_host_rate numeric
+@attribute dst_host_count numeric
+@attribute dst_host_srv_count numeric
+@attribute dst_host_same_srv_rate numeric
+@attribute dst_host_diff_srv_rate numeric
+@attribute dst_host_same_src_port_rate numeric
+@attribute dst_host_srv_diff_host_rate numeric
+@attribute dst_host_serror_rate numeric
+@attribute dst_host_srv_serror_rate numeric
+@attribute dst_host_rerror_rate numeric
+@attribute dst_host_srv_rerror_rate numeric
+@attribute class {normal,back,land,neptune,pod,smurf,teardrop,apache2,udpstorm,processtable,worm,satan,ipsweep,nmap,portsweep,mscan,saint,guess_passwd,ftp_write,imap,phf,multihop,warezmaster,warezclient,spy,xlock,xsnoop,snmpguess,snmpgetattack,httptunnel,sendmail,mailbomb,named,buffer_overflow,loadmodule,rootkit,perl,sqlattack,xterm,ps}
+
+
+@data
+0,tcp,private,REJ,0,0,0,229,10,0,0,1,1,0.04,0.06,0,255,10,0.04,0.06,0,0,0,0,1,1,?
