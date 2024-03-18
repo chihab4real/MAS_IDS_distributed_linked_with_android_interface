@@ -1,3 +1,5 @@
+package MAS_IDS.PlatfromObjects;
+
 import weka.core.Instance;
 
 public class PacketSniffer {
@@ -5,11 +7,11 @@ public class PacketSniffer {
 
     private boolean solved;
 
-    PacketSniffer(){
+    public PacketSniffer(){
 
     }
 
-    PacketSniffer(Instance instance,boolean solved){
+    public PacketSniffer(Instance instance,boolean solved){
         this.instance=instance;
         this.solved = solved;
 

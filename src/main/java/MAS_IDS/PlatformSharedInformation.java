@@ -1,3 +1,6 @@
+package MAS_IDS;
+
+import MAS_IDS.PlatfromObjects.Message;
 import jade.core.Profile;
 import jade.core.ProfileImpl;
 import jade.core.Runtime;
@@ -11,26 +14,27 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-public class PlatformPara {
+public class PlatformSharedInformation {
 
-    PlatformPara(){
+    //this class is used to easily share data between objects in realtime
+
+    PlatformSharedInformation(){
 
     }
     public static  Runtime runtime = Runtime.instance();
     public static  Profile profile = new ProfileImpl();
-
     public  static ContainerController containerController;
 
-    public static ArrayList<Boolean> alive= new ArrayList<>();
     public static String startTime;
     public static String startTime2;
 
 
-    public static void NotifyMessages(Message message,int index) throws Exception{
+    //this method put messages in a specific .txt file
+    public static void NotifyMessages(Message message, int index) throws Exception{
         String fileName="C:\\Users\\pc\\Desktop\\IDSData+type\\Messages"+startTime+".txt";
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
         //DateTimeFormatter dtf2 = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-        String str = "-----------Message ID: "+index+" -----------"+"\nSender-: "+message.getSender()+"\nReciever-:"+message.getReciever()+
+        String str = "-----------MAS_IDS.PlatfromObjects.Message ID: "+index+" -----------"+"\nSender-: "+message.getSender()+"\nReciever-:"+message.getReciever()+
                 "\nContent-:"+message.getContent()+"\nTime and Date-:"+dtf.format(message.getTime())+"\n\n\n";
 
 

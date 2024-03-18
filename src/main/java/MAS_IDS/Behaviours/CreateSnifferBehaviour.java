@@ -1,3 +1,5 @@
+package MAS_IDS.Behaviours;
+
 import jade.core.AgentContainer;
 import jade.core.ProfileImpl;
 import jade.core.Runtime;
@@ -30,7 +32,7 @@ public class CreateSnifferBehaviour extends OneShotBehaviour {
 
         AgentController agentController = null;
         try {
-            agentController = getAgent().getContainerController().createNewAgent("SnifferAgent_"+containername,"SnifferAgent",null);
+            agentController = getAgent().getContainerController().createNewAgent("SnifferAgent_"+containername,"MAS_IDS.Agents.SnifferAgent",null);
             agentController.start();
         } catch (StaleProxyException e) {
             e.printStackTrace();

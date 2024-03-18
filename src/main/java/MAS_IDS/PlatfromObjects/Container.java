@@ -1,4 +1,4 @@
-import weka.core.Instance;
+package MAS_IDS.PlatfromObjects;
 
 import java.util.ArrayList;
 
@@ -22,7 +22,7 @@ public class Container {
 
 
 
-    Container(){
+    public Container(){
 
         this.ContainerID=""+count;
         this.packetsDetected = new ArrayList<>();
@@ -37,7 +37,7 @@ public class Container {
 
         count++;
     }
-    Container(String subManagerAID,String snifferAID,String analysorAID){
+    public Container(String subManagerAID,String snifferAID,String analysorAID){
         this.ContainerID=""+count;
         count++;
         this.SubManagerAID=subManagerAID;

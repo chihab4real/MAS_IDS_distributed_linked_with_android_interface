@@ -1,21 +1,20 @@
+package MAS_IDS.Agents;
+
+import MAS_IDS.PlatfromObjects.Attack;
+import MAS_IDS.PlatfromObjects.Clsi;
+import MAS_IDS.PlatfromObjects.Message;
+import MAS_IDS.PlatfromObjects.PacketDT;
 import com.mongodb.*;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.core.behaviours.TickerBehaviour;
 import jade.lang.acl.ACLMessage;
-import jade.wrapper.ControllerException;
-import weka.classifiers.Classifier;
-import weka.classifiers.evaluation.Evaluation;
 import weka.classifiers.functions.MultilayerPerceptron;
 import weka.classifiers.functions.SMO;
-import weka.classifiers.functions.SMOreg;
 import weka.classifiers.trees.J48;
 import weka.core.Instances;
-import weka.core.converters.ConverterUtils;
 import weka.core.converters.ConverterUtils.DataSource;
-import weka.filters.Filter;
-import weka.filters.supervised.attribute.AddClassification;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -66,7 +65,7 @@ public class ClassifAgent extends Agent {
                         send(msg);
                         try {
                             ManagerAgent.addMessage((new Message(msg.getSender().getLocalName(),"AnalysorAgent_Container"+(i+1),msg.getContent())));
-                            //PlatformPara.NotifyMessages(new Message(msg.getSender().getLocalName(),"AnalysorAgent_Container"+(i+1),msg.getContent()),0);
+                            //MAS_IDS.PlatformPara.NotifyMessages(new MAS_IDS.PlatfromObjects.Message(msg.getSender().getLocalName(),"AnalysorAgent_Container"+(i+1),msg.getContent()),0);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -93,7 +92,7 @@ public class ClassifAgent extends Agent {
                                 send(msg);
                                 try {
                                     ManagerAgent.addMessage((new Message(msg.getSender().getLocalName(),"AnalysorAgent_Container"+(i+1),msg.getContent())));
-                                    //PlatformPara.NotifyMessages(new Message(msg.getSender().getLocalName(),"AnalysorAgent_Container"+(i+1),msg.getContent()),0);
+                                    //MAS_IDS.PlatformPara.NotifyMessages(new MAS_IDS.PlatfromObjects.Message(msg.getSender().getLocalName(),"AnalysorAgent_Container"+(i+1),msg.getContent()),0);
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
@@ -250,20 +249,20 @@ public class ClassifAgent extends Agent {
             ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
             msg.setContent("ClassifReady");
             AID dest = null;
-            dest = new AID("ManagerAgent", AID.ISLOCALNAME);
+            dest = new AID("MAS_IDS.Agents.ManagerAgent", AID.ISLOCALNAME);
             msg.addReceiver(dest);
             send(msg);
 
             try {
-                ManagerAgent.addMessage(new Message(msg.getSender().getLocalName(),"ManagerAgent",msg.getContent()));
-                //PlatformPara.NotifyMessages(new Message(msg.getSender().getLocalName(),"ManagerAgent",msg.getContent()),0);
+                ManagerAgent.addMessage(new Message(msg.getSender().getLocalName(),"MAS_IDS.Agents.ManagerAgent",msg.getContent()));
+                //MAS_IDS.PlatformPara.NotifyMessages(new MAS_IDS.PlatfromObjects.Message(msg.getSender().getLocalName(),"MAS_IDS.Agents.ManagerAgent",msg.getContent()),0);
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
-            /*Message messageListe;
-            messageListe = new Message(msg.getSender().getLocalName(), "ManagerAgent", msg.getContent());
-            ManagerAgent.addMessage(messageListe);*/
+            /*MAS_IDS.PlatfromObjects.Message messageListe;
+            messageListe = new MAS_IDS.PlatfromObjects.Message(msg.getSender().getLocalName(), "MAS_IDS.Agents.ManagerAgent", msg.getContent());
+            MAS_IDS.Agents.ManagerAgent.addMessage(messageListe);*/
 
         }
 

@@ -1,19 +1,16 @@
+package MAS_IDS.Agents;
+
+import MAS_IDS.Behaviours.CreateContainers;
+import MAS_IDS.PlatformSharedInformation;
+import MAS_IDS.PlatfromObjects.Container;
+import MAS_IDS.PlatfromObjects.Message;
+import MAS_IDS.PlatfromObjects.PacketSolved;
 import jade.core.AID;
 import jade.core.Agent;
-import jade.core.Profile;
 import jade.core.behaviours.CyclicBehaviour;
-import jade.core.behaviours.OneShotBehaviour;
 import jade.core.behaviours.TickerBehaviour;
 import jade.lang.acl.ACLMessage;
-import jade.wrapper.AgentController;
-import jade.wrapper.StaleProxyException;
-import weka.core.Instances;
-import weka.core.converters.ConverterUtils.DataSource;
 
-import java.io.*;
-import java.net.Socket;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class ManagerAgent extends Agent  {
@@ -53,7 +50,7 @@ public class ManagerAgent extends Agent  {
                         }
 
                         try {
-                            //PlatformPara.NotifyMessages(new Message(msg.getSender().getLocalName(),"SubManagerAgent_Container"+(i+1),msg.getContent()),0);
+                            //MAS_IDS.PlatformPara.NotifyMessages(new MAS_IDS.PlatfromObjects.Message(msg.getSender().getLocalName(),"SubManagerAgent_Container"+(i+1),msg.getContent()),0);
                             ManagerAgent.addMessage(new Message(msg.getSender().getLocalName(),"SubManagerAgent_Container"+(i+1),msg.getContent()));
                         } catch (Exception e) {
 
@@ -76,12 +73,12 @@ public class ManagerAgent extends Agent  {
                     ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
                     msg.setContent("update");
                     AID dest = null;
-                    dest = new AID("ClassifAgent", AID.ISLOCALNAME);
+                    dest = new AID("MAS_IDS.Agents.ClassifAgent", AID.ISLOCALNAME);
                     msg.addReceiver(dest);
                     send(msg);
                     try {
-                        ManagerAgent.addMessage(new Message(msg.getSender().getLocalName(),"ClassifAgent",msg.getContent()));
-                        //PlatformPara.NotifyMessages(new Message(msg.getSender().getLocalName(),"ManagerAgent",msg.getContent()),0);
+                        ManagerAgent.addMessage(new Message(msg.getSender().getLocalName(),"MAS_IDS.Agents.ClassifAgent",msg.getContent()));
+                        //MAS_IDS.PlatformPara.NotifyMessages(new MAS_IDS.PlatfromObjects.Message(msg.getSender().getLocalName(),"MAS_IDS.Agents.ManagerAgent",msg.getContent()),0);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -132,7 +129,7 @@ public class ManagerAgent extends Agent  {
         messages.add(message);
 
         try {
-            PlatformPara.NotifyMessages(message,messages.size()-1);
+            PlatformSharedInformation.NotifyMessages(message,messages.size()-1);
         } catch (Exception e) {
             e.printStackTrace();
         }

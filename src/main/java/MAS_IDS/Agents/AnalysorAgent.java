@@ -1,21 +1,14 @@
+package MAS_IDS.Agents;
+
+import MAS_IDS.PlatfromObjects.*;
 import com.mongodb.*;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
-import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
-import jade.wrapper.ControllerException;
-import weka.classifiers.Classifier;
-import weka.classifiers.trees.J48;
 import weka.core.Instance;
-import weka.core.Instances;
-import weka.filters.Filter;
-import weka.filters.supervised.attribute.AddClassification;
 
 import java.util.ArrayList;
-import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
 
 
 public class AnalysorAgent extends Agent {
@@ -36,7 +29,7 @@ public class AnalysorAgent extends Agent {
 
 
         DT = ClassifAgent.DT;
-        SVM=ClassifAgent.SVM;
+        SVM= ClassifAgent.SVM;
         NN = ClassifAgent.NN;
 
         String containerID = getMyID(getAID().getLocalName());
@@ -50,9 +43,9 @@ public class AnalysorAgent extends Agent {
         msg.addReceiver(dest);
         send(msg);
 
-        Message messageListe;
-        messageListe = new Message(msg.getSender().getLocalName(),"SnifferAgent_Container"+containerID,msg.getContent());
-        ManagerAgent.addMessage(messageListe);*/
+        MAS_IDS.PlatfromObjects.Message messageListe;
+        messageListe = new MAS_IDS.PlatfromObjects.Message(msg.getSender().getLocalName(),"SnifferAgent_Container"+containerID,msg.getContent());
+        MAS_IDS.Agents.ManagerAgent.addMessage(messageListe);*/
 
         addBehaviour(new CyclicBehaviour() {
             @Override
@@ -65,7 +58,7 @@ public class AnalysorAgent extends Agent {
 
                     if(recieve.getContent().equals("Update")){
                         DT = ClassifAgent.DT;
-                        SVM=ClassifAgent.SVM;
+                        SVM= ClassifAgent.SVM;
                         NN = ClassifAgent.NN;
                     }
                     if(recieve.getContent().equals("Check")){
@@ -77,7 +70,7 @@ public class AnalysorAgent extends Agent {
                         send(msg);
                         try {
                             ManagerAgent.addMessage(new Message(msg.getSender().getLocalName(),"SubManagerAgent_Container"+String.valueOf(containerID),msg.getContent()));
-                            //PlatformPara.NotifyMessages(new Message(msg.getSender().getLocalName(),"SubManagerAgent_Container"+String.valueOf(containerID),msg.getContent()),0);
+                            //MAS_IDS.PlatformPara.NotifyMessages(new MAS_IDS.PlatfromObjects.Message(msg.getSender().getLocalName(),"SubManagerAgent_Container"+String.valueOf(containerID),msg.getContent()),0);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -91,12 +84,12 @@ public class AnalysorAgent extends Agent {
                         ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
                         msg.setContent("Check50_A" + containerID);
                         AID dest = null;
-                        dest = new AID("ManagerAgent", AID.ISLOCALNAME);
+                        dest = new AID("MAS_IDS.Agents.ManagerAgent", AID.ISLOCALNAME);
                         msg.addReceiver(dest);
                         send(msg);
                         try {
-                            ManagerAgent.addMessage(new Message(msg.getSender().getLocalName(),"ManagerAgent",msg.getContent()));
-                            //PlatformPara.NotifyMessages(new Message(msg.getSender().getLocalName(),"ManagerAgent",msg.getContent()),0);
+                            ManagerAgent.addMessage(new Message(msg.getSender().getLocalName(),"MAS_IDS.Agents.ManagerAgent",msg.getContent()));
+                            //MAS_IDS.PlatformPara.NotifyMessages(new MAS_IDS.PlatfromObjects.Message(msg.getSender().getLocalName(),"MAS_IDS.Agents.ManagerAgent",msg.getContent()),0);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -106,7 +99,7 @@ public class AnalysorAgent extends Agent {
 
 
                         Message messageListe;
-                        messageListe = new Message(msg.getSender().getLocalName(), "ManagerAgent", msg.getContent());
+                        messageListe = new Message(msg.getSender().getLocalName(), "MAS_IDS.Agents.ManagerAgent", msg.getContent());
                         ManagerAgent.addMessage(messageListe);
 
                         ManagerAgent.containers.get(Integer.parseInt(containerID)-1).setAgentInformer(true);
@@ -162,7 +155,7 @@ public class AnalysorAgent extends Agent {
 
 
 
-    public void Solve(ArrayList<Attack> attacks,PacketSniffer packetTest,Clsi DT,Clsi SVM,Clsi NN) throws Exception{
+    public void Solve(ArrayList<Attack> attacks, PacketSniffer packetTest, Clsi DT, Clsi SVM, Clsi NN) throws Exception{
 
         String containerID = getMyID(getAID().getLocalName());
 
@@ -199,13 +192,13 @@ public class AnalysorAgent extends Agent {
         System.out.println("\n----------------------------------------------\n\n"+getAID().getLocalName()+": \n");
 
         System.out.println(packetTest.getInstance());
-        System.out.println("DT:\t"+ClassifAgent.j48.classifyInstance(packetTest.getInstance()));
-        System.out.println("NN:\t"+ClassifAgent.multilayerPerceptron.classifyInstance(packetTest.getInstance()));
-        System.out.println("SVM:\t"+ClassifAgent.smOreg.classifyInstance(packetTest.getInstance()));
+        System.out.println("DT:\t"+MAS_IDS.Agents.ClassifAgent.j48.classifyInstance(packetTest.getInstance()));
+        System.out.println("NN:\t"+MAS_IDS.Agents.ClassifAgent.multilayerPerceptron.classifyInstance(packetTest.getInstance()));
+        System.out.println("SVM:\t"+MAS_IDS.Agents.ClassifAgent.smOreg.classifyInstance(packetTest.getInstance()));
         String containerID = getMyID(getAID().getLocalName());
         ACLMessage msg = new ACLMessage( ACLMessage.INFORM );
-        ManagerAgent.packetSolveds.add(new PacketSolved(packetTest.getInstance(),packetTest.getInstance(),true));
-        ManagerAgent.containers.get(Integer.parseInt(containerID)-1).getPacketsDetected().remove(0);
+        MAS_IDS.Agents.ManagerAgent.packetSolveds.add(new MAS_IDS.PlatfromObjects.PacketSolved(packetTest.getInstance(),packetTest.getInstance(),true));
+        MAS_IDS.Agents.ManagerAgent.containers.get(Integer.parseInt(containerID)-1).getPacketsDetected().remove(0);
 
         msg.setContent("PCT"+"_OK");
         AID dest = null;
@@ -213,9 +206,9 @@ public class AnalysorAgent extends Agent {
         msg.addReceiver(dest);
         send(msg);
 
-        Message messageListe;
-        messageListe = new Message(msg.getSender().getLocalName(),"SnifferAgent_Container"+containerID,msg.getContent());
-        ManagerAgent.addMessage(messageListe);
+        MAS_IDS.PlatfromObjects.Message messageListe;
+        messageListe = new MAS_IDS.PlatfromObjects.Message(msg.getSender().getLocalName(),"SnifferAgent_Container"+containerID,msg.getContent());
+        MAS_IDS.Agents.ManagerAgent.addMessage(messageListe);
 
         //System.out.println("FINAAAAAAAAAL");*/
 
@@ -223,7 +216,7 @@ public class AnalysorAgent extends Agent {
 
     }
 
-    public  double getFinaleClass(Clsi DT,Clsi SVM,Clsi NN,Attack j48,Attack svm, Attack nn){
+    public  double getFinaleClass(Clsi DT, Clsi SVM, Clsi NN, Attack j48, Attack svm, Attack nn){
 
 
 
@@ -267,7 +260,7 @@ public class AnalysorAgent extends Agent {
         return Double.parseDouble(strings.get((int)index));
     }
 
-    public String getByWho(String result,Attack j48,Attack svm, Attack nn){
+    public String getByWho(String result, Attack j48, Attack svm, Attack nn){
         String x="";
         if(result.equals(j48.getName())){
             x+="DT,";

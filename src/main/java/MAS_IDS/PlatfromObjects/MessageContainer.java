@@ -1,3 +1,5 @@
+package MAS_IDS.PlatfromObjects;
+
 import java.util.ArrayList;
 
 public class MessageContainer {
@@ -70,7 +72,7 @@ public class MessageContainer {
 
     }
 
-    String toSend(){
+    public String toSend(){
 
         return this.MachineNumber+","+ this.TotalPackets+","+ this.NormalNumber+","+ this.AnomalyNumber+","+
                 this.DosNumber+","+ this.ProbeNumber+","+ this.R2LNumber+","+ this.U2RNumber+","+

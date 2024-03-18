@@ -1,21 +1,19 @@
+package MAS_IDS.Agents;
+
+import MAS_IDS.PlatfromObjects.Message;
+import MAS_IDS.PlatfromObjects.PacketSniffer;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.core.behaviours.TickerBehaviour;
-import jade.core.behaviours.WakerBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.wrapper.AgentController;
-import jade.wrapper.ControllerException;
 import jade.wrapper.StaleProxyException;
-import weka.core.Instance;
 import weka.core.Instances;
 import weka.core.converters.ConverterUtils.*;
 
-import java.util.ArrayList;
 import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
 
 
 public class SnifferAgent extends Agent {
@@ -51,16 +49,16 @@ public class SnifferAgent extends Agent {
         msg.addReceiver(dest);
         send(msg);
 
-        Message messageListe;
-        messageListe = new Message(msg.getSender().getLocalName(),"SubManagerAgent_Container"+containerID,msg.getContent());
-        ManagerAgent.addMessage(messageListe);*/
+        MAS_IDS.PlatfromObjects.Message messageListe;
+        messageListe = new MAS_IDS.PlatfromObjects.Message(msg.getSender().getLocalName(),"SubManagerAgent_Container"+containerID,msg.getContent());
+        MAS_IDS.Agents.ManagerAgent.addMessage(messageListe);*/
 
         addBehaviour(new OneShotBehaviour() {
             @Override
             public void action() {
                 try {
                     AgentController agentController = null;
-                    agentController = getContainerController().createNewAgent("AnalysorAgent_Container"+containerID,"AnalysorAgent",null);
+                    agentController = getContainerController().createNewAgent("AnalysorAgent_Container"+containerID,"MAS_IDS.Agents.AnalysorAgent",null);
 
 
                     agentController.start();
@@ -84,7 +82,7 @@ public class SnifferAgent extends Agent {
                         send(msg);
                         try {
                             ManagerAgent.addMessage(new Message(msg.getSender().getLocalName(),"SubManagerAgent_Container"+String.valueOf(containerID),msg.getContent()));
-                            //PlatformPara.NotifyMessages(new Message(msg.getSender().getLocalName(),"SubManagerAgent_Container"+String.valueOf(containerID),msg.getContent()),0);
+                            //MAS_IDS.PlatformPara.NotifyMessages(new MAS_IDS.PlatfromObjects.Message(msg.getSender().getLocalName(),"SubManagerAgent_Container"+String.valueOf(containerID),msg.getContent()),0);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -190,10 +188,10 @@ public class SnifferAgent extends Agent {
 
                    send(msg);
 
-                   Message messageListe = new Message();
+                   MAS_IDS.PlatfromObjects.Message messageListe = new MAS_IDS.PlatfromObjects.Message();
                    try {
-                       messageListe = new Message(msg.getSender().getLocalName(),"SubManagerAgent_"+getContainerController().getContainerName(),msg.getContent());
-                       ManagerAgent.messages.add(messageListe);
+                       messageListe = new MAS_IDS.PlatfromObjects.Message(msg.getSender().getLocalName(),"SubManagerAgent_"+getContainerController().getContainerName(),msg.getContent());
+                       MAS_IDS.Agents.ManagerAgent.messages.add(messageListe);
 
                    } catch (ControllerException e) {
                        e.printStackTrace();
@@ -217,7 +215,7 @@ public class SnifferAgent extends Agent {
         return AID.replace("SnifferAgent_Container","");
     }
 
-    public int Exist(PacketSniffer packetSniffer,String containerID){
+    public int Exist(PacketSniffer packetSniffer, String containerID){
 
 
 

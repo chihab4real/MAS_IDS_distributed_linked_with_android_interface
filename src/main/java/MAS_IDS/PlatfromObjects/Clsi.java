@@ -1,3 +1,5 @@
+package MAS_IDS.PlatfromObjects;
+
 import weka.classifiers.Classifier;
 import weka.classifiers.evaluation.Evaluation;
 import weka.core.Instances;
@@ -8,11 +10,11 @@ public class Clsi {
 
     private Evaluation evaluation;
 
-    Clsi(){
+    public Clsi(){
 
     }
 
-    Clsi(String name , Classifier classifier, Instances trainData ) throws Exception {
+    public Clsi(String name , Classifier classifier, Instances trainData ) throws Exception {
         this.Name=name;
         this.classifier = classifier;
 

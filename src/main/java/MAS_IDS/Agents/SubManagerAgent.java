@@ -1,12 +1,11 @@
+package MAS_IDS.Agents;
+
+import MAS_IDS.PlatfromObjects.Message;
 import jade.core.*;
-import jade.core.Runtime;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.core.behaviours.OneShotBehaviour;
-import jade.core.behaviours.TickerBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.wrapper.AgentController;
-import jade.wrapper.ContainerController;
-import jade.wrapper.ControllerException;
 import jade.wrapper.StaleProxyException;
 
 public class SubManagerAgent extends Agent {
@@ -25,17 +24,17 @@ public class SubManagerAgent extends Agent {
                 ACLMessage msg = new ACLMessage( ACLMessage.INFORM );
                 msg.setContent("SMC"+containerID+"Ready");
                 AID dest = null;
-                dest = new AID("ManagerAgent",AID.ISLOCALNAME);
+                dest = new AID("MAS_IDS.Agents.ManagerAgent",AID.ISLOCALNAME);
                 msg.addReceiver(dest);
                 send(msg);
 
-                Message messageListe;
-                messageListe = new Message(msg.getSender().getLocalName(),"ManagerAgent",msg.getContent());
-                ManagerAgent.addMessage(messageListe);*/
+                MAS_IDS.PlatfromObjects.Message messageListe;
+                messageListe = new MAS_IDS.PlatfromObjects.Message(msg.getSender().getLocalName(),"MAS_IDS.Agents.ManagerAgent",msg.getContent());
+                MAS_IDS.Agents.ManagerAgent.addMessage(messageListe);*/
 
                 AgentController agentController = null;
                 try {
-                    agentController = getAgent().getContainerController().createNewAgent("SnifferAgent_Container"+containerID,"SnifferAgent",null);
+                    agentController = getAgent().getContainerController().createNewAgent("SnifferAgent_Container"+containerID,"MAS_IDS.Agents.SnifferAgent",null);
                     ManagerAgent.containers.get(Integer.parseInt(containerID)-1).setSnifferAID("SnifferAgent_Container"+containerID);
                     agentController.start();
                 } catch (StaleProxyException e) {
@@ -57,9 +56,9 @@ public class SubManagerAgent extends Agent {
                 System.out.println("send");
                 send(msg);
 
-                Message messageListe;
-                messageListe = new Message(msg.getSender().getLocalName(), "AnalysorAgent_Container"+cid, msg.getContent());
-                ManagerAgent.addMessage(messageListe);
+                MAS_IDS.PlatfromObjects.Message messageListe;
+                messageListe = new MAS_IDS.PlatfromObjects.Message(msg.getSender().getLocalName(), "AnalysorAgent_Container"+cid, msg.getContent());
+                MAS_IDS.Agents.ManagerAgent.addMessage(messageListe);
             }
         });*/
 
@@ -82,11 +81,11 @@ public class SubManagerAgent extends Agent {
 
 
                                 try {
-                                    agentController =  getAgent().getContainerController().createNewAgent("AnalysorAgent"+ManagerAgent.analysornumber+"_"+
+                                    agentController =  getAgent().getContainerController().createNewAgent("MAS_IDS.Agents.AnalysorAgent"+MAS_IDS.Agents.ManagerAgent.analysornumber+"_"+
                                                     getAgent().getContainerController().getContainerName(),
-                                            "AnalysorAgent",null);
+                                            "MAS_IDS.Agents.AnalysorAgent",null);
                                     agentController.start();
-                                    ManagerAgent.analysornumber++;
+                                    MAS_IDS.Agents.ManagerAgent.analysornumber++;
                                 } catch (ControllerException e) {
                                     e.printStackTrace();
                                 }
@@ -102,15 +101,15 @@ public class SubManagerAgent extends Agent {
                         ACLMessage message1 = new ACLMessage( ACLMessage.INFORM );
                         message1.setContent("codeAM1");
                         AID dest;
-                        dest = new AID("ManagerAgent",AID.ISLOCALNAME);
+                        dest = new AID("MAS_IDS.Agents.ManagerAgent",AID.ISLOCALNAME);
 
                         message1.addReceiver(dest);
                         send(message1);
 
-                        Message messageListe = new Message();
-                        messageListe = new Message(message1.getSender().getLocalName(),"ManagerAgent",message1.getContent());
-                        //ManagerAgent.messages.add(messageListe);
-                        ManagerAgent.addMessage(messageListe);
+                        MAS_IDS.PlatfromObjects.Message messageListe = new MAS_IDS.PlatfromObjects.Message();
+                        messageListe = new MAS_IDS.PlatfromObjects.Message(message1.getSender().getLocalName(),"MAS_IDS.Agents.ManagerAgent",message1.getContent());
+                        //MAS_IDS.Agents.ManagerAgent.messages.add(messageListe);
+                        MAS_IDS.Agents.ManagerAgent.addMessage(messageListe);
 
 
                     }
@@ -120,16 +119,16 @@ public class SubManagerAgent extends Agent {
                         ACLMessage message1 = new ACLMessage( ACLMessage.INFORM );
                         message1.setContent("codeAM2");
                         AID dest;
-                        dest = new AID("ManagerAgent",AID.ISLOCALNAME);
+                        dest = new AID("MAS_IDS.Agents.ManagerAgent",AID.ISLOCALNAME);
 
                         message1.addReceiver(dest);
 
                         send(message1);
 
-                        Message messageListe = new Message();
-                        messageListe = new Message(message1.getSender().getLocalName(),"ManagerAgent",message1.getContent());
-                        //ManagerAgent.messages.add(messageListe);
-                        ManagerAgent.addMessage(messageListe);
+                        MAS_IDS.PlatfromObjects.Message messageListe = new MAS_IDS.PlatfromObjects.Message();
+                        messageListe = new MAS_IDS.PlatfromObjects.Message(message1.getSender().getLocalName(),"MAS_IDS.Agents.ManagerAgent",message1.getContent());
+                        //MAS_IDS.Agents.ManagerAgent.messages.add(messageListe);
+                        MAS_IDS.Agents.ManagerAgent.addMessage(messageListe);
 
                     }
                 }
@@ -163,7 +162,7 @@ public class SubManagerAgent extends Agent {
                                 }
                                 try {
                                     ManagerAgent.addMessage(new Message(msg.getSender().getLocalName(),"AnalysorAgent_Container"+String.valueOf(containerID),msg.getContent()));
-                                    //PlatformPara.NotifyMessages(new Message(msg.getSender().getLocalName(),"AnalysorAgent_Container"+String.valueOf(containerID),msg.getContent()),0);
+                                    //MAS_IDS.PlatformPara.NotifyMessages(new MAS_IDS.PlatfromObjects.Message(msg.getSender().getLocalName(),"AnalysorAgent_Container"+String.valueOf(containerID),msg.getContent()),0);
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
@@ -199,7 +198,7 @@ public class SubManagerAgent extends Agent {
                                 }
                                 try {
                                     ManagerAgent.addMessage(new Message(msg.getSender().getLocalName(),"SnifferAgent_Container"+String.valueOf(containerID),msg.getContent()));
-                                    //PlatformPara.NotifyMessages(new Message(msg.getSender().getLocalName(),"SnifferAgent_Container"+String.valueOf(containerID),msg.getContent()),0);
+                                    //MAS_IDS.PlatformPara.NotifyMessages(new MAS_IDS.PlatfromObjects.Message(msg.getSender().getLocalName(),"SnifferAgent_Container"+String.valueOf(containerID),msg.getContent()),0);
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }

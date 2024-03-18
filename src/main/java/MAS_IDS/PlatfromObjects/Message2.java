@@ -1,3 +1,5 @@
+package MAS_IDS.PlatfromObjects;
+
 import jade.lang.acl.ACLMessage;
 
 import java.time.LocalDateTime;
@@ -8,18 +10,18 @@ public class Message2 {
     private String Content;
     private String Time;
 
-    Message2(){
+    public Message2(){
 
     }
 
-    Message2(String sender, String reciever, String content,String time){
+    public Message2(String sender, String reciever, String content,String time){
         this.Content = content;
         this.Reciever = reciever;
         this.Sender = sender;
         this.Time = time;
     }
 
-    Message2(ACLMessage aclMessage){
+    public Message2(ACLMessage aclMessage){
         this.Sender = aclMessage.getSender().getLocalName();
         this.Content = aclMessage.getContent();
 

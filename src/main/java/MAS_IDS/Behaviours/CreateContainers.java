@@ -1,8 +1,10 @@
+package MAS_IDS.Behaviours;
+
+import MAS_IDS.Agents.ManagerAgent;
+import MAS_IDS.PlatfromObjects.Container;
 import jade.core.Profile;
 import jade.core.ProfileImpl;
 import jade.core.Runtime;
-import jade.core.behaviours.Behaviour;
-import jade.core.behaviours.OneShotBehaviour;
 import jade.core.behaviours.SimpleBehaviour;
 import jade.domain.JADEAgentManagement.ShutdownPlatform;
 import jade.wrapper.AgentController;
@@ -19,7 +21,7 @@ public class CreateContainers extends SimpleBehaviour {
 
         Runtime runtime = Runtime.instance();
         ProfileImpl profile = new ProfileImpl();
-        profile.setParameter(Profile.CONTAINER_NAME, "Container"+n);
+        profile.setParameter(Profile.CONTAINER_NAME, "MAS_IDS.PlatfromObjects.Container"+n);
         profile.setParameter(Profile.MAIN_HOST, "localhost");
         Container container = new Container();
         container.setSubManagerAID("SubManagerAgent_Container"+container.getContainerID());
@@ -30,7 +32,7 @@ public class CreateContainers extends SimpleBehaviour {
         ContainerController containerController =  runtime.createAgentContainer(profile);
         AgentController agentController = null;
         try {
-            agentController = containerController.createNewAgent("SubManagerAgent_Container"+n,"SubManagerAgent",null);
+            agentController = containerController.createNewAgent("SubManagerAgent_Container"+n,"MAS_IDS.Agents.SubManagerAgent",null);
             agentController.start();
             ShutdownPlatform shutdownPlatform = new ShutdownPlatform();
 

@@ -1,3 +1,5 @@
+package MAS_IDS.PlatfromObjects;
+
 import weka.core.Instance;
 
 public class PacketSolved {

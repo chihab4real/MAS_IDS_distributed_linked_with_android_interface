@@ -1,14 +1,16 @@
+package MAS_IDS.PlatfromObjects;
+
 public class Attack {
     private String ID;
     private String Name;
     private String Category;
 
 
-    Attack(){
+    public Attack(){
 
     }
 
-    Attack(String id, String name, String category){
+    public Attack(String id, String name, String category){
         this.ID=id;
         this.Name=name;
         this.Category=category;
