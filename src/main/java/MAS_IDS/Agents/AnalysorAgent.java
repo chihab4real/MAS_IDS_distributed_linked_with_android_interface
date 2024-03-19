@@ -14,19 +14,12 @@ import java.util.ArrayList;
 public class AnalysorAgent extends Agent {
 
 
-    //public boolean informed = false;
+
     Clsi DT,SVM,NN;
 
     @Override
     protected void setup() {
-
-
-
-
         ArrayList<Attack> attacks = ClassifAgent.attacks;
-
-
-
 
         DT = ClassifAgent.DT;
         SVM= ClassifAgent.SVM;
@@ -34,62 +27,62 @@ public class AnalysorAgent extends Agent {
 
         String containerID = getMyID(getAID().getLocalName());
 
-        /*
-
-        ACLMessage msg = new ACLMessage( ACLMessage.INFORM );
-        msg.setContent("AAC"+containerID+"Ready");
-        AID dest = null;
-        dest = new AID("SnifferAgent_Container"+containerID,AID.ISLOCALNAME);
-        msg.addReceiver(dest);
-        send(msg);
-
-        MAS_IDS.PlatfromObjects.Message messageListe;
-        messageListe = new MAS_IDS.PlatfromObjects.Message(msg.getSender().getLocalName(),"SnifferAgent_Container"+containerID,msg.getContent());
-        MAS_IDS.Agents.ManagerAgent.addMessage(messageListe);*/
-
         addBehaviour(new CyclicBehaviour() {
             @Override
             public void action() {
 
+                ACLMessage received = receive();
+                if(received!=null){
 
-
-                ACLMessage recieve = receive();
-                if(recieve!=null){
-
-                    if(recieve.getContent().equals("Update")){
+                    if(received.getContent().equals("Update")){
+                        //get the newer version of classfiers after updating them
                         DT = ClassifAgent.DT;
                         SVM= ClassifAgent.SVM;
                         NN = ClassifAgent.NN;
                     }
-                    if(recieve.getContent().equals("Check")){
-                        ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
-                        msg.setContent("Check_OK");
-                        AID dest = null;
-                        dest = new AID("SubManagerAgent_Container"+String.valueOf(containerID), AID.ISLOCALNAME);
-                        msg.addReceiver(dest);
-                        send(msg);
+
+                    if(received.getContent().equals("Check")){
+
+                        //Check message
+                        SendMessage("Check_OK","SubManagerAgent_Container"+String.valueOf(containerID));
+
+                        /*
+                        ACLMessage toSend = new ACLMessage(ACLMessage.INFORM);
+                        toSend.setContent("Check_OK");
+                        AID receiverAgent = null;
+                        receiverAgent = new AID("SubManagerAgent_Container"+String.valueOf(containerID), AID.ISLOCALNAME);
+                        toSend.addReceiver(receiverAgent);
+                        send(toSend);
                         try {
-                            ManagerAgent.addMessage(new Message(msg.getSender().getLocalName(),"SubManagerAgent_Container"+String.valueOf(containerID),msg.getContent()));
-                            //MAS_IDS.PlatformPara.NotifyMessages(new MAS_IDS.PlatfromObjects.Message(msg.getSender().getLocalName(),"SubManagerAgent_Container"+String.valueOf(containerID),msg.getContent()),0);
+                            ManagerAgent.addMessage(new Message(toSend.getSender().getLocalName(),"SubManagerAgent_Container"+String.valueOf(containerID),toSend.getContent()));
                         } catch (Exception e) {
                             e.printStackTrace();
-                        }
+                        }*/
                     }
                 }
 
 
 
+                //Check with other agents after a specific number of classified packets
                 if(ManagerAgent.containers.get(Integer.parseInt(containerID)-1).getPacketClassified().size()>=5 && !ManagerAgent.containers.get(Integer.parseInt(containerID)-1).isInformed()) {
                     if(!ManagerAgent.containers.get(Integer.parseInt(containerID)-1).isAgentInformer()){
-                        ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
-                        msg.setContent("Check50_A" + containerID);
+
+                        ACLMessage aclMessage = SendMessage("Check50_A" + containerID,"MAS_IDS.Agents.ManagerAgent");
+                        ManagerAgent.addMessage(new Message(aclMessage.getSender().getLocalName(), "MAS_IDS.Agents.ManagerAgent", aclMessage.getContent()));
+                        ManagerAgent.containers.get(Integer.parseInt(containerID)-1).setAgentInformer(true);
+
+
+
+
+                        /*
+                        ACLMessage toSend = new ACLMessage(ACLMessage.INFORM);
+                        toSend.setContent("Check50_A" + containerID);
                         AID dest = null;
                         dest = new AID("MAS_IDS.Agents.ManagerAgent", AID.ISLOCALNAME);
-                        msg.addReceiver(dest);
-                        send(msg);
+                        toSend.addReceiver(dest);
+                        send(toSend);
                         try {
-                            ManagerAgent.addMessage(new Message(msg.getSender().getLocalName(),"MAS_IDS.Agents.ManagerAgent",msg.getContent()));
-                            //MAS_IDS.PlatformPara.NotifyMessages(new MAS_IDS.PlatfromObjects.Message(msg.getSender().getLocalName(),"MAS_IDS.Agents.ManagerAgent",msg.getContent()),0);
+                            ManagerAgent.addMessage(new Message(toSend.getSender().getLocalName(),"MAS_IDS.Agents.ManagerAgent",toSend.getContent()));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -104,36 +97,39 @@ public class AnalysorAgent extends Agent {
 
                         ManagerAgent.containers.get(Integer.parseInt(containerID)-1).setAgentInformer(true);
 
+
+
+
+                      */
+
                     }
 
-                    ACLMessage messageRcv = receive();
-                    if (messageRcv!=null){
-                        if (messageRcv.getContent().equals("netst")){
+                    ACLMessage received_after = receive();
+                    if (received_after!=null){
+                        if (received_after.getContent().equals("netst")){
                             ManagerAgent.containers.get(Integer.parseInt(containerID)-1).setCuurentstate(ManagerAgent.containers.get(Integer.parseInt(containerID)-1).getPacketClassified().size());
                             block();
                         }
 
-                        if(messageRcv.getContent().contains("ADT_")){
+                        if(received_after.getContent().contains("ADT_")){
                             ManagerAgent.containers.get(Integer.parseInt(containerID)-1).setInformed(true);
-                            System.out.println("Anomalie/attack sur "+messageRcv.getContent().replace("ADT_","")+"machines");
+                            System.out.println("Anomaly/attack on "+received_after.getContent().replace("ADT_","")+"machines");
 
 
                         }
                         block();
                     }
                 }
-                if(!ManagerAgent.containers.get(Integer.parseInt(containerID)-1).getPacketsDetected().isEmpty()){
+                if(!ManagerAgent.containers.get(Integer.parseInt(containerID)-1).getSniffedPackets().isEmpty()){
 
-                    PacketSniffer packetSniffer = ManagerAgent.containers.get(Integer.parseInt(containerID)-1).getPacketsDetected().get(0);
-
-
+                    PacketSniffer packetSniffer = ManagerAgent.containers.get(Integer.parseInt(containerID)-1).getSniffedPackets().get(0);
 
 
                     try {
-                      Solve(attacks,packetSniffer,DT,SVM,NN);
+                        DetectType(attacks,packetSniffer,DT,SVM,NN);
 
 
-                        ManagerAgent.containers.get(Integer.parseInt(containerID)-1).getPacketsDetected().remove(packetSniffer);
+                        ManagerAgent.containers.get(Integer.parseInt(containerID)-1).getSniffedPackets().remove(packetSniffer);
 
 
 
@@ -146,6 +142,23 @@ public class AnalysorAgent extends Agent {
 
 
     }
+    private ACLMessage SendMessage(String content, String AgentAID){
+
+        //Check message
+        ACLMessage toSend = new ACLMessage(ACLMessage.INFORM);
+        toSend.setContent(content);
+        AID receiverAgent = null;
+        receiverAgent = new AID(AgentAID, AID.ISLOCALNAME);
+        toSend.addReceiver(receiverAgent);
+        send(toSend);
+        try {
+            ManagerAgent.addMessage(new Message(toSend.getSender().getLocalName(),AgentAID,toSend.getContent()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return toSend;
+    }
 
     public String getMyID(String AID){
         return AID.replace("AnalysorAgent_Container","");
@@ -155,7 +168,7 @@ public class AnalysorAgent extends Agent {
 
 
 
-    public void Solve(ArrayList<Attack> attacks, PacketSniffer packetTest, Clsi DT, Clsi SVM, Clsi NN) throws Exception{
+    public void DetectType(ArrayList<Attack> attacks, PacketSniffer packetTest, Clsi DT, Clsi SVM, Clsi NN) throws Exception{
 
         String containerID = getMyID(getAID().getLocalName());
 
@@ -174,16 +187,16 @@ public class AnalysorAgent extends Agent {
         System.out.println("SVM: "+attacks.get((int) resultjsvm).getName()+"  ["+attacks.get((int)resultjsvm).getCategory()+"]");
         System.out.println("NN: "+attacks.get((int) resultjnn).getName()+"  ["+attacks.get((int)resultjnn).getCategory()+"]\n\n");
 
-        double finall= getFinaleClass(DT,SVM,NN,attackj48,attacksvm,attacknn);
+        double finalClass= getFinalClass(DT,SVM,NN,attackj48,attacksvm,attacknn);
 
-        System.out.println("Final decision : "+attacks.get((int)finall).getName());
+        System.out.println("Final decision : "+attacks.get((int)finalClass).getName());
 
         Instance instance = packetTest.getInstance();
-        instance.setValue(26,finall);
+        instance.setValue(26,finalClass);
         PacketDetected packetDetected = new PacketDetected(instance);
-        packetDetected.setCategory(attacks.get((int)finall).getCategory());
+        packetDetected.setCategory(attacks.get((int)finalClass).getCategory());
         System.out.println("\n\nCATE:"+packetDetected.getCategory());
-        packetDetected.setBywho(getByWho(attacks.get((int)finall).getName(),attackj48,attacksvm,attacknn));
+        packetDetected.setBywho(getByWho(attacks.get((int)finalClass).getName(),attackj48,attacksvm,attacknn));
         ManagerAgent.containers.get(Integer.parseInt(containerID)-1).getPacketClassified().add(packetDetected);
         sendPackettoDB(packetDetected);
 
@@ -216,7 +229,9 @@ public class AnalysorAgent extends Agent {
 
     }
 
-    public  double getFinaleClass(Clsi DT, Clsi SVM, Clsi NN, Attack j48, Attack svm, Attack nn){
+
+
+    public  double getFinalClass(Clsi DT, Clsi SVM, Clsi NN, Attack j48, Attack svm, Attack nn){
 
 
 
@@ -296,6 +311,7 @@ public class AnalysorAgent extends Agent {
                         .append("state", "MA")
                         .append("zip", 12345))
                 .append("books", books);*/
+
 
         collection.insert(dbObject);
         System.out.println("Packet Detectd and saved as  "+dbObject.get("class"));
