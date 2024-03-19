@@ -4,17 +4,17 @@ import weka.classifiers.Classifier;
 import weka.classifiers.evaluation.Evaluation;
 import weka.core.Instances;
 
-public class Clsi {
+public class PlatformClassifier {
     private Classifier classifier;
     private String Name;
 
     private Evaluation evaluation;
 
-    public Clsi(){
+    public PlatformClassifier(){
 
     }
 
-    public Clsi(String name , Classifier classifier, Instances trainData ) throws Exception {
+    public PlatformClassifier(String name , Classifier classifier, Instances trainData ) throws Exception {
         this.Name=name;
         this.classifier = classifier;
 
@@ -22,7 +22,7 @@ public class Clsi {
         evalnn.evaluateModel(this.classifier,trainData);
         this.evaluation = evalnn;
 
-        //this.FM = evalnn.fMeasure(1);
+
 
     }
 
