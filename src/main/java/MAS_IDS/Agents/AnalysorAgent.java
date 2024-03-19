@@ -15,7 +15,7 @@ public class AnalysorAgent extends Agent {
 
 
 
-    Clsi DT,SVM,NN;
+    PlatformClassifier DT,SVM,NN;
 
     @Override
     protected void setup() {
@@ -168,7 +168,7 @@ public class AnalysorAgent extends Agent {
 
 
 
-    public void DetectType(ArrayList<Attack> attacks, PacketSniffer packetTest, Clsi DT, Clsi SVM, Clsi NN) throws Exception{
+    public void DetectType(ArrayList<Attack> attacks, PacketSniffer packetTest, PlatformClassifier DT, PlatformClassifier SVM, PlatformClassifier NN) throws Exception{
 
         String containerID = getMyID(getAID().getLocalName());
 
@@ -231,7 +231,7 @@ public class AnalysorAgent extends Agent {
 
 
 
-    public  double getFinalClass(Clsi DT, Clsi SVM, Clsi NN, Attack j48, Attack svm, Attack nn){
+    public  double getFinalClass(PlatformClassifier DT, PlatformClassifier SVM, PlatformClassifier NN, Attack j48, Attack svm, Attack nn){
 
 
 
@@ -242,7 +242,7 @@ public class AnalysorAgent extends Agent {
 
         ArrayList<String> strings = new ArrayList<>();
         ArrayList<Double> scores = new ArrayList<>();
-        ArrayList<Clsi> clsis = new ArrayList<>();
+        ArrayList<PlatformClassifier> clsis = new ArrayList<>();
         clsis.add(DT);
         clsis.add(SVM);
         clsis.add(NN);
