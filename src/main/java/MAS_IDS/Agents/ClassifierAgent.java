@@ -1,7 +1,7 @@
 package MAS_IDS.Agents;
 
 import MAS_IDS.PlatfromObjects.Attack;
-import MAS_IDS.PlatfromObjects.Clsi;
+import MAS_IDS.PlatfromObjects.PlatformClassifier;
 import MAS_IDS.PlatfromObjects.Message;
 import MAS_IDS.PlatfromObjects.PacketDT;
 import com.mongodb.*;
@@ -23,13 +23,13 @@ import java.net.Socket;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-public class ClassifAgent extends Agent {
+public class ClassifierAgent extends Agent {
 
     public static ArrayList<Attack> attacks = new ArrayList<>();
 
-    public static Clsi DT;
-    public static Clsi SVM;
-    public static Clsi NN;
+    public static PlatformClassifier DT;
+    public static PlatformClassifier SVM;
+    public static PlatformClassifier NN;
 
     private int ok1 = 0;
     private int ok2 = 0;
@@ -113,7 +113,7 @@ public class ClassifAgent extends Agent {
         J48 j48 = new J48();
         j48.buildClassifier(TrainDataDT);
 
-        DT = new Clsi("DT", j48, TrainDataDT);
+        DT = new PlatformClassifier("DT", j48, TrainDataDT);
 
         System.out.println("DT DONE-----");
         System.out.println("F-Measure :" + DT.getEvaluation().fMeasure(1));
@@ -144,7 +144,7 @@ public class ClassifAgent extends Agent {
         multilayerPerceptron.setTrainingTime(2000);
         multilayerPerceptron.setHiddenLayers("3");
         multilayerPerceptron.buildClassifier(TrainDataSVM);
-        NN = new Clsi("NN", multilayerPerceptron, TrainDataSVM);
+        NN = new PlatformClassifier("NN", multilayerPerceptron, TrainDataSVM);
         System.out.println("NN done");
         System.out.println("F-Measure :" + NN.getEvaluation().fMeasure(1));
         /*System.out.println("Precision : "+DT.getEvaluation().precision(1));
@@ -169,7 +169,7 @@ public class ClassifAgent extends Agent {
 
         SMO smo = new SMO();
         smo.buildClassifier(TrainDataSVM);
-        SVM = new Clsi("SVM", smo, TrainDataSVM);
+        SVM = new PlatformClassifier("SVM", smo, TrainDataSVM);
         System.out.println("SVM done");
         System.out.println("F-Measure :" + SVM.getEvaluation().fMeasure(1));
         /*System.out.println("Precision : "+DT.getEvaluation().precision(1));
